@@ -1,6 +1,13 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import router from "./router";
-import store from "./store";
+import "element-plus/theme-chalk/index.css";
+// import router from "./router";
+// import store from "./store";
 
-createApp(App).use(store).use(router).mount("#app");
+// createApp(App).use(store).use(router).mount("#app");
+createApp(App).mount("#app");
+
+/**
+ * 1. 构造假数据，实现根据位置渲染内容
+ * 2. 配置组件的映射关系
+ */
