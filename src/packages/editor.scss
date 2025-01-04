@@ -6,7 +6,7 @@
   &-right {
     position: absolute;
     width: 270px;
-    background-color: red;
+    // background-color: red;
     top: 0;
     bottom: 0;
   }
@@ -52,7 +52,10 @@
     left: 280px;
     right: 280px;
     height: 80px;
-    background-color: blue;
+    // background-color: blue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   &-container {
     padding: 80px 270px 0;
@@ -101,4 +104,19 @@
   left: 0;
   right: 0;
   border-top: 1px dashed red;
+}
+
+.editor-top-button {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  user-select: none;
+  & + & {
+    margin-left: 3px;
+  }
 }

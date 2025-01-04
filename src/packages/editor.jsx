@@ -5,6 +5,22 @@ import { cloneDeep } from "lodash";
 import { useMenuDragger } from "./useMenuDragger";
 import { useBlockFoucs } from "./useBlockFoucs";
 import { useBlockDragger } from "./useBlockDragger";
+import { useCommand } from "./useCommand";
+import { ElButton } from "element-plus";
+import {
+  RefreshLeft,
+  RefreshRight,
+  Download,
+  Upload,
+  Top,
+  Bottom,
+  Delete,
+  Close,
+  // eslint-disable-next-line no-unused-vars
+  Edit,
+  // eslint-disable-next-line no-unused-vars
+  View,
+} from "@element-plus/icons-vue";
 
 export default defineComponent({
   props: {
@@ -41,6 +57,90 @@ export default defineComponent({
       data
     );
 
+    const { commands } = useCommand(data);
+
+    const buttons = [
+      {
+        label: "撤销",
+        icon: RefreshLeft,
+        handler: () => {
+          commands.undo();
+        },
+      },
+      {
+        label: "重做",
+        icon: RefreshRight,
+        handler: () => {
+          commands.redo();
+        },
+      },
+      {
+        label: "导出",
+        icon: Download,
+        handler: () => {
+          console.log("导出");
+          //   importDialog({
+          //     title: "导出JSON使用",
+          //     context: JSON.stringify(data.value),
+          //   });
+        },
+      },
+      {
+        label: "导入",
+        icon: Upload,
+        handler: () => {
+          console.log("导入");
+          //   importDialog({
+          //     title: "导入JSON",
+          //     context: "",
+          //     footer: true,
+          //     confirm(text) {
+          //       console.log(text);
+          //       // data.value = JSON.parse(text); // 这样去更改无法保留历史记录
+          //       state.commands.updateContainer(JSON.parse(text));
+          //     },
+          //   });
+        },
+      },
+      {
+        label: "置顶",
+        icon: Top,
+        // handler: () => {
+        //   state.commands.placeTop();
+        // },
+      },
+      {
+        label: "置底",
+        icon: Bottom,
+        // handler: () => {
+        //   state.commands.placeBottom();
+        // },
+      },
+      {
+        label: "删除",
+        icon: Delete,
+        // handler: () => {
+        //   state.commands.delete();
+        // },
+      },
+      //   {
+      //     label: () => (previewRef.value ? "编辑" : "预览"),
+      //     icon: () => (previewRef.value ? Edit : View),
+      //     // handler: () => {
+      //     //   previewRef.value = !previewRef.value;
+      //     //   clearBlockFocus();
+      //     // },
+      //   },
+      {
+        label: "关闭",
+        icon: Close,
+        // handler: () => {
+        //   editorRef.value = false;
+        //   clearBlockFocus();
+        // },
+      },
+    ];
+
     return () => (
       <div class="editor">
         <div class="editor-left">
@@ -59,7 +159,20 @@ export default defineComponent({
             </div>
           ))}
         </div>
-        <div class="editor-top">菜单</div>
+        <div class="editor-top">
+          {buttons.map((btn, index) => {
+            return (
+              <ElButton
+                class="editor-top-button"
+                key={{ index }}
+                onClick={btn.handler}
+                icon={btn.icon}
+              >
+                {btn.label}
+              </ElButton>
+            );
+          })}
+        </div>
         <div class="editor-right">属性</div>
         <div class="editor-container">
           <div class="editor-container-canvas">
