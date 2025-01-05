@@ -27,7 +27,7 @@ export function useCommand(data) {
       }
       queue.push({ redo, undo }); // 保存指令的前进后退
       state.current = current + 1;
-      console.log(queue);
+      // console.log(queue);
     };
   };
   // 注册命令
@@ -93,6 +93,25 @@ export function useCommand(data) {
         },
         undo() {
           data.value = { ...data.value, blocks: before || [] };
+        },
+      };
+    },
+  });
+  registry({
+    name: "updateContainer",
+    pushQueue: true,
+    keyboard: "",
+    execute(newVal) {
+      const state = {
+        before: data.value,
+        after: newVal,
+      };
+      return {
+        redo: () => {
+          data.value = state.after;
+        },
+        undo: () => {
+          data.value = state.before;
         },
       };
     },

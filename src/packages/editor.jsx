@@ -6,7 +6,8 @@ import { useMenuDragger } from "./useMenuDragger";
 import { useBlockFoucs } from "./useBlockFoucs";
 import { useBlockDragger } from "./useBlockDragger";
 import { useCommand } from "./useCommand";
-import { ElButton } from "element-plus";
+// eslint-disable-next-line no-unused-vars
+import { ElButton, ElInput, ElMessage, ElMessageBox } from "element-plus";
 import {
   RefreshLeft,
   RefreshRight,
@@ -21,6 +22,8 @@ import {
   // eslint-disable-next-line no-unused-vars
   View,
 } from "@element-plus/icons-vue";
+// eslint-disable-next-line no-unused-vars
+import { importDialog } from "@/components/Dialog";
 
 export default defineComponent({
   props: {
@@ -78,28 +81,39 @@ export default defineComponent({
         label: "导出",
         icon: Download,
         handler: () => {
-          console.log("导出");
           //   importDialog({
           //     title: "导出JSON使用",
           //     context: JSON.stringify(data.value),
           //   });
+          ElMessageBox.prompt("导出JSON使用", {
+            showConfirmButton: false,
+            inputValue: JSON.stringify(data.value),
+            // configButtonText: "确认",
+            inputType: "textarea",
+            cancelButtonText: "关闭",
+            // inputPattern: "",
+            // inputErrorMessage: "",
+          })
+            .then(() => {})
+            .catch(() => {});
         },
       },
       {
         label: "导入",
         icon: Upload,
         handler: () => {
-          console.log("导入");
-          //   importDialog({
-          //     title: "导入JSON",
-          //     context: "",
-          //     footer: true,
-          //     confirm(text) {
-          //       console.log(text);
-          //       // data.value = JSON.parse(text); // 这样去更改无法保留历史记录
-          //       state.commands.updateContainer(JSON.parse(text));
-          //     },
-          //   });
+          importDialog({
+            title: "导入JSON",
+            context: "",
+            footer: true,
+            confirm(text) {
+              text;
+              // console.log(text);
+              // data.value = JSON.parse(text); // 这样去更改无法保留历史记录
+              commands.updateContainer(JSON.parse(text));
+              // console.log(commands);
+            },
+          });
         },
       },
       {
