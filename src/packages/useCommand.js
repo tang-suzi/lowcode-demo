@@ -2,7 +2,7 @@ import { onUnmounted } from "vue";
 import { events } from "./events";
 import { cloneDeep } from "lodash";
 
-export function useCommand(data) {
+export function useCommand(data, focusData) {
   const state = {
     current: -1,
     queue: [], // 存放操作指令
@@ -112,6 +112,76 @@ export function useCommand(data) {
         },
         undo: () => {
           data.value = state.before;
+        },
+      };
+    },
+  });
+  registry({
+    name: "placeTop",
+    pushQueue: true,
+    execute() {
+      let before = cloneDeep(data.value.blocks);
+      let after = (() => {
+        const { focus, unfocused } = focusData.value;
+        const maxZIndex = unfocused.reduce((pre, block) => {
+          return Math.max(pre, block.zIndex);
+        }, -Infinity);
+        focus.forEach((block) => (block.zIndex = maxZIndex + 1));
+        return data.value.blocks;
+      })();
+      return {
+        redo: () => {
+          data.value = { ...data.value, blocks: after };
+        },
+        undo: () => {
+          data.value = { ...data.value, blocks: before };
+        },
+      };
+    },
+  });
+  registry({
+    name: "placeBottom",
+    pushQueue: true,
+    execute() {
+      let before = cloneDeep(data.value.blocks);
+      let after = (() => {
+        const { focus, unfocused } = focusData.value;
+        let minZIndex =
+          unfocused.reduce((pre, block) => {
+            return Math.min(pre, block.zIndex);
+          }, Infinity) - 1;
+        if (minZIndex < 0) {
+          const dur = Math.abs(minZIndex);
+          minZIndex = 0;
+          unfocused.forEach((block) => (block.zIndex += dur));
+        }
+        focus.forEach((block) => (block.zIndex = minZIndex));
+        return data.value.blocks;
+      })();
+      return {
+        redo: () => {
+          data.value = { ...data.value, blocks: after };
+        },
+        undo: () => {
+          data.value = { ...data.value, blocks: before };
+        },
+      };
+    },
+  });
+  registry({
+    name: "delete",
+    pushQueue: true,
+    execute() {
+      let state = {
+        before: cloneDeep(data.value.blocks),
+        after: focusData.value.unfocused,
+      };
+      return {
+        redo: () => {
+          data.value = { ...data.value, blocks: state.after };
+        },
+        undo: () => {
+          data.value = { ...data.value, blocks: state.before };
         },
       };
     },

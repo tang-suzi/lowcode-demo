@@ -1,5 +1,5 @@
 import { computed, ref } from "vue";
-export function useBlockFoucs(data, callback) {
+export function useBlockFoucs(data, previewRef, callback) {
   const selectIndex = ref(-1);
 
   const lastSelectBlock = computed(() => data.value.blocks[selectIndex.value]);
@@ -7,6 +7,7 @@ export function useBlockFoucs(data, callback) {
     data.value.blocks.forEach((block) => (block.focus = false));
   };
   const blockMouseDown = (e, block, index) => {
+    if (previewRef.value) return;
     e.preventDefault();
     e.stopPropagation();
     if (e.shiftKey) {
@@ -37,6 +38,7 @@ export function useBlockFoucs(data, callback) {
 
   // 清除元素焦点
   const containerMousedown = () => {
+    if (previewRef.value) return;
     selectIndex.value = -1;
     clearBlockFocus();
   };
@@ -45,5 +47,6 @@ export function useBlockFoucs(data, callback) {
     blockMouseDown,
     containerMousedown,
     lastSelectBlock,
+    clearBlockFocus,
   };
 }
