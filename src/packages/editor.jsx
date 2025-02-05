@@ -24,6 +24,7 @@ import {
 } from "@element-plus/icons-vue";
 // eslint-disable-next-line no-unused-vars
 import { importDialog } from "@/components/Dialog";
+import { $dropdown, DropdownItem } from "@/components/Dropdown";
 
 export default defineComponent({
   props: {
@@ -161,6 +162,64 @@ export default defineComponent({
       },
     ];
 
+    const onContextMenuBlock = (e, block) => {
+      e.preventDefault();
+      block;
+      $dropdown({
+        el: e.target,
+        content: () => (
+          <>
+            <DropdownItem
+              label="删除"
+              icon={<Delete />}
+              onClick={() => {
+                commands.delete();
+              }}
+            ></DropdownItem>
+            <DropdownItem
+              label="置顶"
+              icon={<Top />}
+              onClick={() => {
+                commands.placeTop();
+              }}
+            ></DropdownItem>
+            <DropdownItem
+              label="置底"
+              icon={<Bottom />}
+              onClick={() => {
+                commands.placeBottom();
+              }}
+            ></DropdownItem>
+            <DropdownItem
+              label="查看"
+              icon={<View />}
+              onClick={() => {
+                importDialog({
+                  title: "查看节点数据",
+                  context: JSON.stringify(block),
+                });
+              }}
+            ></DropdownItem>
+            <DropdownItem
+              label="导入"
+              icon={<Download />}
+              onClick={() => {
+                importDialog({
+                  title: "查看节点数据",
+                  context: "",
+                  footer: true,
+                  confirm(text) {
+                    text = JSON.parse(text);
+                    commands.updateBlock(text, block);
+                  },
+                });
+              }}
+            ></DropdownItem>
+          </>
+        ),
+      });
+    };
+
     return () =>
       !editorRef.value ? (
         <>
@@ -229,6 +288,7 @@ export default defineComponent({
                       previewRef.value ? "editor-block-preview" : "",
                     ]}
                     onMousedown={(e) => blockMouseDown(e, block, index)}
+                    onContextmenu={(e) => onContextMenuBlock(e, block)}
                   />
                 ))}
                 {markLine.x !== null && (

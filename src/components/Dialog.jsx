@@ -23,7 +23,6 @@ const DialogComponent = defineComponent({
       state.isShow = false;
       state.option.confirm && state.option.confirm(state.option.context);
     };
-    console.log(state.option);
     return () => {
       return (
         <ElDialog v-model={state.isShow} title={state.option.title}>

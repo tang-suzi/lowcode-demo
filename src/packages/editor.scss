@@ -126,3 +126,30 @@
     margin-left: 3px;
   }
 }
+
+.dropdown {
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  box-shadow: 2px 2px #ccc;
+}
+.dropdown-isShow {
+  display: block;
+}
+
+.dropdown-item {
+  line-height: 30px;
+  width: 100px;
+  border-bottom: 1px solid #ccc;
+  text-align: center;
+  user-select: none;
+  cursor: pointer;
+  z-index: 100 !important;
+  span {
+    font-size: 18px;
+    svg {
+      width: 18px;
+      line-height: 30px;
+    }
+  }
+}
