@@ -32,7 +32,7 @@ export default defineComponent({
 
     return () => {
       const component = config.componentMap[props.block.key];
-      const RenderComponent = component.render();
+      const RenderComponent = component.render({ props: props.block.props });
       return (
         <div class="editor-block" style={blockStyles.value} ref={blockRef}>
           {RenderComponent}

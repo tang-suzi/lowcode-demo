@@ -24,6 +24,7 @@ import {
 } from "@element-plus/icons-vue";
 // eslint-disable-next-line no-unused-vars
 import { importDialog } from "@/components/Dialog";
+import EditorOperator from "./editor-operator";
 import { $dropdown, DropdownItem } from "@/components/Dropdown";
 
 export default defineComponent({
@@ -271,7 +272,14 @@ export default defineComponent({
               );
             })}
           </div>
-          <div class="editor-right">属性</div>
+          <div class="editor-right">
+            <EditorOperator
+              block={lastSelectBlock.value}
+              data={data.value}
+              updateContainer={commands.updateContainer}
+              updateBlock={commands.updateBlock}
+            ></EditorOperator>
+          </div>
           <div class="editor-container">
             <div class="editor-container-canvas">
               <div
