@@ -1,5 +1,6 @@
 // 列表区
 // 映射关系
+import Range from "@/components/Range";
 import { ElButton, ElInput } from "element-plus";
 function createEditorConfig() {
   const componentList = [];
@@ -102,5 +103,25 @@ registerConfig.register({
   key: "input",
   model: {
     default: "绑定字段",
+  },
+});
+
+registerConfig.register({
+  label: "范围选择器",
+  preview: () => <Range />,
+  render: ({ model }) => (
+    <Range
+      {...{
+        start: model.start.modelValue,
+        end: model.end.modelValue,
+        "onUpdate:start": model.start["onUpdate:modelValue"],
+        "onUpdate:end": model.end["onUpdate:modelValue"],
+      }}
+    />
+  ),
+  key: "range",
+  model: {
+    start: "开始字段",
+    end: "结束字段",
   },
 });
