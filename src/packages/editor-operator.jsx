@@ -10,6 +10,7 @@ import {
 } from "element-plus";
 import { defineComponent, inject, reactive, watch } from "vue";
 import { cloneDeep } from "lodash";
+import TableEditor from "./table-editor";
 
 export default defineComponent({
   props: {
@@ -58,7 +59,6 @@ export default defineComponent({
         if (component && component.props) {
           content.push(
             Object.entries(component.props).map(([propName, propConfig]) => {
-              console.log(state.editData.props[propName]);
               return (
                 <ElFormItem label={propConfig.label}>
                   {{
@@ -80,6 +80,12 @@ export default defineComponent({
                           );
                         })}
                       </ElSelect>
+                    ),
+                    table: () => (
+                      <TableEditor
+                        propConfig={propConfig}
+                        v-model={state.editData.props[propName]}
+                      />
                     ),
                   }[propConfig.type]()}
                 </ElFormItem>
