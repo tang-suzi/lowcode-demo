@@ -26,6 +26,13 @@
         "size": "small"
       }
     },
-    { "top": 300, "left": 200, "zIndex": 1, "key": "input", "props": {} }
+    {
+      "top": 300,
+      "left": 200,
+      "zIndex": 1,
+      "key": "input",
+      "props": {},
+      "model": {}
+    }
   ]
 }

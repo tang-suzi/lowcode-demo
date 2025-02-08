@@ -30,6 +30,7 @@ import { $dropdown, DropdownItem } from "@/components/Dropdown";
 export default defineComponent({
   props: {
     modelValue: { type: Object },
+    formData: { type: Object },
   },
   emits: ["update:modelValue"],
   setup(props, ctx) {
@@ -232,7 +233,11 @@ export default defineComponent({
             style={containerStyles.value}
           >
             {data.value.blocks.map((block) => (
-              <EditorBlock class="editor-block-preview" block={block} />
+              <EditorBlock
+                class="editor-block-preview"
+                formData={props.formData}
+                block={block}
+              />
             ))}
           </div>
         </>
@@ -290,6 +295,7 @@ export default defineComponent({
               >
                 {data.value.blocks.map((block, index) => (
                   <EditorBlock
+                    formData={props.formData}
                     block={block}
                     class={[
                       block.focus ? "editor-block-focus" : "",

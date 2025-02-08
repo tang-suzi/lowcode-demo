@@ -1,5 +1,5 @@
 <template>
-  <Editor v-model="state" />
+  <Editor v-model="state" :formData="formData" />
 </template>
 
 <script setup>
@@ -10,6 +10,13 @@ const state = ref(data);
 import { registerConfig as config } from "@/utils/editor-config.jsx";
 
 provide("config", config);
+
+const formData = ref({
+  username: "username111",
+  password: "password123",
+  start: 0,
+  end: 100,
+});
 </script>
 
 <style lang="scss">

@@ -87,6 +87,17 @@ export default defineComponent({
             })
           );
         }
+        if (component && component.model) {
+          content.push(
+            Object.entries(component.model).map(([modelName, label]) => {
+              return (
+                <ElFormItem label={label}>
+                  <ElInput v-model={state.editData.model[modelName]} />
+                </ElFormItem>
+              );
+            })
+          );
+        }
       }
 
       return (
